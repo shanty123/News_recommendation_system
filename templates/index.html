@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html >
+
+
+<body>
+ <div class="login">
+	<h1>news recommendation system</h1>
+
+    <form action="{{ url_for('predict')}}"method="post">
+    	<input type="text" name="headline" placeholder="search here" required="required" />
+
+        <input type="submit" value="Predict">{% if res %} {{ res }} {% endif %})
+
+    </form>
+
+ </div>
+</body>
+</html>
