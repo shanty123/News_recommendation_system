@@ -29,7 +29,7 @@ def print_result(request_content,result,X):
         out=[]
         str={'id': i, 'headline': X['headline'].loc[i],'link': X['link'].loc[i]}
         out.append(str)
-        print(out)
+        return(out)
 
 def search(tfidf_matrix,model,reques, top_n = 5):
     request_transform = model.transform([reques])
