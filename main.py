@@ -19,7 +19,7 @@ def predict():
   reques = request.form['headline']
   result = search(tfidf,vector, reques, top_n = 5)
   res=print_result(reques,result,X)
-  return(jsonify(res))
+  print(jsonify(res))
 
 def print_result(request_content,result,X):
     print('\nsearch : ' + request_content)
