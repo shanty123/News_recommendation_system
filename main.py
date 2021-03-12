@@ -19,7 +19,7 @@ def predict():
   reques = request.form['headline']
   result = search(tfidf,vector, reques, top_n = 5)
   res=print_result(reques,result,X)
-  print(jsonify(res))
+  return(res)
 
 def print_result(request_content,result,X):
     print('\nsearch : ' + request_content)
@@ -28,8 +28,8 @@ def print_result(request_content,result,X):
         #s={'id = {0:5d} - headline = {1}'.format(i, X['headline'].loc[i]), 'link={1}'.format(i,X['link'].loc[i])}
         out=[]
         str={'id': i, 'headline': X['headline'].loc[i],'link': X['link'].loc[i]}
-        out.append(str)
-    return(out)
+        #out.append(str)
+    return(str)
 
 def search(tfidf_matrix,model,reques, top_n = 5):
     request_transform = model.transform([reques])
