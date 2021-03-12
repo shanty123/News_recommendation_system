@@ -14,6 +14,8 @@ app = Flask(__name__)
 @app.route('/predict',methods=['GET','POST'])
 def predict():
   tfidf = pickle.load(open('tfidf', 'rb'))
+  X = pickle.load(open('X', 'rb'))
+  vector = pickle.load(open('vector', 'rb'))
   reques = request.form['headline']
   result = search(tfidf,vector, reques, top_n = 5)
   res=print_result(reques,result,X)
