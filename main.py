@@ -28,9 +28,9 @@ def print_result(request_content,result,X):
     for i in result:
         #s={'id = {0:5d} - headline = {1}'.format(i, X['headline'].loc[i]), 'link={1}'.format(i,X['link'].loc[i])}
         out=[]
-        str={'id': i, 'headline': X['headline'].loc[i],'link': X['link'].loc[i]}
-        #out.append(str)
-    return(str)
+        str={'id': str(i), 'headline': X['headline'].loc[i],'link': X['link'].loc[i]}
+        out.append(str)
+    return(out)
 
 def search(tfidf_matrix,model,reques, top_n = 5):
     request_transform = model.transform([reques])
