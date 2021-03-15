@@ -7,12 +7,12 @@ Original file is located at
     https://colab.research.google.com/drive/1KBcvteGwwfRzKDQam1sfLu9LNFD5mqTb
 """
 
-#import os,sys
-#from google.colab import drive
-#drive.mount('/content/drive',force_remount=True)
-#os.listdir()
-#os.chdir('/content/drive/My Drive/')
-#sys.path.append('/content/drive/My Drive/')
+import os,sys
+from google.colab import drive
+drive.mount('/content/drive',force_remount=True)
+os.listdir()
+os.chdir('/content/drive/My Drive/')
+sys.path.append('/content/drive/My Drive/')
 
 import numpy as np
 import pandas as pd
@@ -22,7 +22,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 from sklearn.cluster import MiniBatchKMeans
 
-X=pd.read_csv("result.csv")
+X=pd.read_csv("new.csv")
 X
 
 X = X[pd.isna(X['headline'])==False]
@@ -33,7 +33,7 @@ X.head(3)
 X.info()
 
 # tfidf calculation
-text_content = X['description']
+text_content = X['headline']
 vector = TfidfVectorizer(max_df=0.3,         # drop words that occur in more than X percent of documents
                              #min_df=8,      # only use words that appear at least X times
                              stop_words='english', # remove stop words
@@ -45,8 +45,8 @@ vector = TfidfVectorizer(max_df=0.3,         # drop words that occur in more tha
 tfidf = vector.fit_transform(text_content)
 
 # Request function : search the top_n articles from a request ( request = string)
-def search(tfidf_matrix,model,reques, top_n = 5):
-    request_transform = model.transform([reques])
+def search(tfidf_matrix,model,request, top_n = 5):
+    request_transform = model.transform([request])
     similarity = np.dot(request_transform,np.transpose(tfidf_matrix))
     x = np.array(similarity.toarray()[0])
     indices=np.argsort(x)[-5:][::-1]
@@ -63,16 +63,20 @@ def print_result(request_content,indices,X):
     print('\nsearch : ' + request_content)
     print('\nBest Results :')
     for i in indices:
-        print('id = {0:5d} - headline = {1}'.format(i,X['headline'].loc[i]),X['link'].loc[i])
+        print('id = {0:5d} - headline = {1}'.format(i,X['headline'].loc[i]))
 
+request = 'entertainment '
+#request = text_content[0]
 
-reques = input("search here")
-
-result = search(tfidf,vector, reques, top_n = 5)
-print_result(reques,result,X)
+result = search(tfidf,vector, request, top_n = 5)
+print_result(request,result,X)
 
 #Save objects on filesystem
 pickle.dump(X, open('X', 'wb')) 
 pickle.dump(vector, open('vector', 'wb')) 
 pickle.dump(tfidf, open('tfidf', 'wb'))
 
+# load objects on filesystem
+X = pickle.load(open('X', 'rb'))
+vector = pickle.load(open('vector', 'rb'))
+tfidf = pickle.load(open('tfidf', 'rb'))
